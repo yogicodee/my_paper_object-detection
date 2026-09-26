@@ -1,0 +1,166 @@
+# ============================================================================
+#  Konfigurasi eksperimen — Deteksi APD K3 pada dataset SH17
+#  Semua run memakai protokol identik agar perbandingan antar-arsitektur adil.
+# ============================================================================
+
+dataset:
+  name: Safety-PPE Unified v1
+  kaggle_slug: quocdatlam/ppe-unified-v1
+  root: data/PPE                  # relatif terhadap akar proyek
+  yaml: data/ppe.yaml             # dibuat oleh 02_prepare_dataset.py
+  nc: 12
+  # Dua belas kelas membentuk ENAM PASANG kepatuhan/pelanggaran. Struktur
+  # berpasangan inilah yang memungkinkan analisis asimetri deteksi: apakah
+  # model sama andalnya mengenali pelanggaran seperti mengenali kepatuhan.
+  names:
+    0: helmet
+    1: no_helmet
+    2: vest
+    3: no_vest
+    4: gloves
+    5: no_gloves
+    6: goggles
+    7: no_goggles
+    8: boots
+    9: no_boots
+    10: mask
+    11: no_mask
+
+  # Pasangan kepatuhan -> pelanggaran, dipakai pada analisis asimetri.
+  compliance_pairs:
+    helmet: no_helmet
+    vest: no_vest
+    gloves: no_gloves
+    goggles: no_goggles
+    boots: no_boots
+    mask: no_mask
+
+  # Dataset hanya memuat 37 kotak `no_boots` pada keseluruhan data (4 di antaranya
+  # pada himpunan uji), terlalu sedikit untuk mengestimasi AP secara andal.
+  # Kelas ini dilaporkan apa adanya namun dikecualikan dari rerata agregat.
+  exclude_from_aggregate:
+    - no_boots
+
+# Hyperparameter yang DISAMAKAN untuk semua model (prinsip perbandingan adil).
+# Nilai default Ultralytics dipertahankan kecuali yang tercantum di sini,
+# supaya hasil dapat direproduksi pihak lain tanpa tuning tersembunyi.
+common:
+  # 60 epoch dipilih sebagai kompromi anggaran komputasi: seluruh pelatihan
+  # berlangsung di CPU, dan 100 epoch untuk tiga model membutuhkan sekitar 11
+  # hari berjalan tanpa henti. Dengan penghentian dini berambang 25 epoch,
+  # model yang sudah konvergen tidak dirugikan oleh batas ini. Jumlah epoch
+  # tetap SAMA untuk ketiga model sehingga perbandingan tidak terpengaruh.
+  epochs: 60
+  imgsz: 640
+  patience: 25            # early stopping
+  optimizer: auto
+  seed: 0
+  deterministic: true
+  cos_lr: true
+  close_mosaic: 10        # matikan mosaic 10 epoch terakhir
+  val: true
+  plots: true
+  workers: 2              # 6 core: sisakan inti untuk komputasi, bukan pemuat data
+  cache: false            # citra hasil pra-resize sudah murah didekode
+
+# Daftar run WAJIB: tiga generasi arsitektur pada skala nano.
+#
+# Skala nano dipilih sebagai cakupan utama atas dasar dua pertimbangan yang
+# saling menguatkan. Pertama, pengawasan APD di lapangan dijalankan pada
+# perangkat tepi berdaya rendah, sehingga skala nano justru paling relevan
+# secara praktis. Kedua, seluruh pelatihan berlangsung di CPU (tidak tersedia
+# GPU CUDA), dan skala nano membuat lingkup eksperimen ini dapat diselesaikan
+# dalam waktu yang wajar.
+#
+# `batch` SAMA untuk ketiga model, sehingga perbandingan sepenuhnya adil.
+runs:
+  - id: yolov8n
+    model: yolov8n.pt
+    batch: 16
+    family: YOLOv8
+    scale: n
+    note: Baseline CNN, pembanding terhadap tolok ukur asli SH17
+
+  - id: yolo11n
+    model: yolo11n.pt
+    batch: 16
+    family: YOLO11
+    scale: n
+    note: Belum pernah dibenchmark pada SH17
+
+  - id: yolo26n
+    model: yolo26n.pt
+    batch: 16
+    family: YOLO26
+    scale: n
+    note: Arsitektur NMS-free + STAL, belum pernah dibenchmark pada SH17
+
+# Run opsional — perlu GPU atau waktu jauh lebih panjang.
+# Skala s menghabiskan sekitar tiga perempat total waktu komputasi dibanding
+# skala nano, sehingga dipisahkan ke sini dan disebut di naskah sebagai
+# pekerjaan lanjutan.
+optional_runs:
+  - id: yolov8s
+    model: yolov8s.pt
+    batch: 16
+    family: YOLOv8
+    scale: s
+    note: Skala s - perlu GPU
+
+  - id: yolo11s
+    model: yolo11s.pt
+    batch: 16
+    family: YOLO11
+    scale: s
+    note: Skala s - perlu GPU
+
+  - id: yolo26s
+    model: yolo26s.pt
+    batch: 16
+    family: YOLO26
+    scale: s
+    note: Skala s - perlu GPU
+
+  - id: rtdetr-l
+    model: rtdetr-l.pt
+    batch: 8               # transformer: ~11 GB VRAM @ batch 16, diturunkan agar muat
+    family: RT-DETR
+    scale: l
+    note: Pembanding arsitektur transformer - perlu GPU
+
+  # Replikasi multi-seed untuk mengukur variasi inisialisasi.
+  # Hanya pada skala n agar biaya komputasi terkendali.
+  - id: yolo11n_s1
+    model: yolo11n.pt
+    batch: 16
+    seed: 1
+    family: YOLO11
+    scale: n
+    note: Replikasi seed 1
+  - id: yolo11n_s2
+    model: yolo11n.pt
+    batch: 16
+    seed: 2
+    family: YOLO11
+    scale: n
+    note: Replikasi seed 2
+  - id: yolo26n_s1
+    model: yolo26n.pt
+    batch: 16
+    seed: 1
+    family: YOLO26
+    scale: n
+    note: Replikasi seed 1
+  - id: yolo26n_s2
+    model: yolo26n.pt
+    batch: 16
+    seed: 2
+    family: YOLO26
+    scale: n
+    note: Replikasi seed 2
+
+statistics:
+  n_bootstrap: 2000       # jumlah resample bootstrap berpasangan
+  alpha: 0.05
+  correction: holm        # koreksi perbandingan ganda
+  seed: 42
