@@ -1,0 +1,21 @@
+# Safety-PPE Unified v1 (stratified re-split) - 12 lop
+# KHONG khai bao `path`: duong dan duoc suy ra tu vi tri file nay,
+# nen dataset chay duoc o bat ky may nao (Kaggle, Colab, local).
+train: train/images
+val: val/images
+test: test/images
+
+nc: 12
+names:
+  0: helmet
+  1: no_helmet
+  2: vest
+  3: no_vest
+  4: gloves
+  5: no_gloves
+  6: goggles
+  7: no_goggles
+  8: boots
+  9: no_boots
+  10: mask
+  11: no_mask
