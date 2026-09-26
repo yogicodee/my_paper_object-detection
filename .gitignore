@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Model weights
+*.pt
+*.pth
+*.onnx
+
+# Dataset (images/labels are large; regenerate with scripts/01-02)
+data/PPE/train/
+data/PPE/val/
+data/PPE/test/
+data/PPE/splits/
+data/ppe.yaml
+*.cache
+
+# Training outputs
+results/runs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
