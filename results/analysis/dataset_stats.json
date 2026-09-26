@@ -1,0 +1,189 @@
+{
+  "splits": {
+    "train": {
+      "images": 12566,
+      "instances": 35832,
+      "instances_per_image": 2.85,
+      "images_without_labels": 411,
+      "size_distribution": {
+        "medium": 12732,
+        "small": 19815,
+        "large": 3285
+      },
+      "class_counts": {
+        "helmet": 11537,
+        "no_helmet": 5797,
+        "vest": 2033,
+        "no_vest": 786,
+        "gloves": 3515,
+        "no_gloves": 4315,
+        "goggles": 2581,
+        "no_goggles": 2708,
+        "boots": 777,
+        "no_boots": 26,
+        "mask": 830,
+        "no_mask": 927
+      }
+    },
+    "val": {
+      "images": 3590,
+      "instances": 10233,
+      "instances_per_image": 2.85,
+      "images_without_labels": 117,
+      "size_distribution": {
+        "medium": 3738,
+        "small": 5256,
+        "large": 1239
+      },
+      "class_counts": {
+        "helmet": 3296,
+        "no_helmet": 1655,
+        "vest": 581,
+        "no_vest": 225,
+        "gloves": 1004,
+        "no_gloves": 1231,
+        "goggles": 737,
+        "no_goggles": 774,
+        "boots": 221,
+        "no_boots": 7,
+        "mask": 237,
+        "no_mask": 265
+      }
+    },
+    "test": {
+      "images": 1795,
+      "instances": 5114,
+      "instances_per_image": 2.85,
+      "images_without_labels": 59,
+      "size_distribution": {
+        "large": 578,
+        "medium": 1774,
+        "small": 2762
+      },
+      "class_counts": {
+        "helmet": 1649,
+        "no_helmet": 827,
+        "vest": 290,
+        "no_vest": 112,
+        "gloves": 501,
+        "no_gloves": 616,
+        "goggles": 368,
+        "no_goggles": 386,
+        "boots": 111,
+        "no_boots": 4,
+        "mask": 118,
+        "no_mask": 132
+      }
+    }
+  },
+  "per_class": {
+    "helmet": {
+      "id": 0,
+      "instances": 16482,
+      "share_pct": 32.205
+    },
+    "no_helmet": {
+      "id": 1,
+      "instances": 8279,
+      "share_pct": 16.177
+    },
+    "vest": {
+      "id": 2,
+      "instances": 2904,
+      "share_pct": 5.674
+    },
+    "no_vest": {
+      "id": 3,
+      "instances": 1123,
+      "share_pct": 2.194
+    },
+    "gloves": {
+      "id": 4,
+      "instances": 5020,
+      "share_pct": 9.809
+    },
+    "no_gloves": {
+      "id": 5,
+      "instances": 6162,
+      "share_pct": 12.04
+    },
+    "goggles": {
+      "id": 6,
+      "instances": 3686,
+      "share_pct": 7.202
+    },
+    "no_goggles": {
+      "id": 7,
+      "instances": 3868,
+      "share_pct": 7.558
+    },
+    "boots": {
+      "id": 8,
+      "instances": 1109,
+      "share_pct": 2.167
+    },
+    "no_boots": {
+      "id": 9,
+      "instances": 37,
+      "share_pct": 0.072
+    },
+    "mask": {
+      "id": 10,
+      "instances": 1185,
+      "share_pct": 2.315
+    },
+    "no_mask": {
+      "id": 11,
+      "instances": 1324,
+      "share_pct": 2.587
+    }
+  },
+  "totals": {
+    "images": 17951,
+    "instances": 51179,
+    "size_distribution": {
+      "medium": 18244,
+      "small": 27833,
+      "large": 5102
+    },
+    "imbalance_ratio": 445.5
+  },
+  "compliance_pairs": {
+    "helmet": {
+      "positive": 16482,
+      "negative": 8279,
+      "negative_share_pct": 33.44,
+      "ratio_pos_to_neg": 1.99
+    },
+    "vest": {
+      "positive": 2904,
+      "negative": 1123,
+      "negative_share_pct": 27.89,
+      "ratio_pos_to_neg": 2.59
+    },
+    "gloves": {
+      "positive": 5020,
+      "negative": 6162,
+      "negative_share_pct": 55.11,
+      "ratio_pos_to_neg": 0.81
+    },
+    "goggles": {
+      "positive": 3686,
+      "negative": 3868,
+      "negative_share_pct": 51.2,
+      "ratio_pos_to_neg": 0.95
+    },
+    "boots": {
+      "positive": 1109,
+      "negative": 37,
+      "negative_share_pct": 3.23,
+      "ratio_pos_to_neg": 29.97
+    },
+    "mask": {
+      "positive": 1185,
+      "negative": 1324,
+      "negative_share_pct": 52.77,
+      "ratio_pos_to_neg": 0.9
+    }
+  }
+}
