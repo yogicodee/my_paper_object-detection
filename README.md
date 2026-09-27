@@ -1,4 +1,4 @@
-# Deteksi Kepatuhan dan Pelanggaran APD K3
+# Deteksi Kepatuhan dan Pelanggaran APD K3(Keselamatan & Kesehatan Kerja)
 
 Penelitian pembanding arsitektur deteksi objek untuk pengawasan alat pelindung diri
 (APD) di lingkungan kerja, disiapkan untuk publikasi pada jurnal terakreditasi
